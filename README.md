@@ -1,51 +1,21 @@
-<!--
-*** Thanks for checking out this README Template. If you have a suggestion that would
-*** make this better, please fork the repo and create a pull request or simply open
-*** an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/CreditSaisonIndia/oneaboveall/blob/CLS-6162/README.md">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">ONE-ABOVE-ALL</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    Cloud Infrastructure of Credit Saison written in yaml nested stack templates.
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/CreditSaisonIndia/oneaboveall/blob/CLS-6162/README.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="https://github.com/CreditSaisonIndia/oneaboveall/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/CreditSaisonIndia/oneaboveall/issues">Request Feature</a>
   </p>
 </p>
 
@@ -54,96 +24,210 @@
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
-* [About the Project](#about-the-project)
+* [Architecture](#architecture)
   * [Built With](#built-with)
-* [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-* [Usage](#usage)
+* [Template Overview](#template-overview)
+  * [Core](#core)
+    * [master.yaml](#core-master)
+    * [01-kms.yaml](#kms)      
+    * [01-newvpc.yaml](#newvpc)  
+    * [02-securitygroups.yaml](#core-securitygroups) 
+    * [03-rds.yaml](#rds)     
+    * [04-apigateway.yaml](#core-apigateway) 
+    * [04-route53.yaml](#route53) 
+    * [04-elasticsearch.yaml](#elasticsearch)  
+    * [04-s3.yaml](#s3) 
+    * [04-s3-logs.yaml](#s3-logs) 
+    * [04-sqs.yaml](#sqs)   
+    * [04-sqsfifo.yaml](#sqsfifo)       
+    * [05-cloudtrail.yaml](#cloudtrail) 
+    * [05-dashboard.yaml](#dashboard) 
+    * [05-guardduty.yaml](#guardduty)     
+    * [05-loggroups.yaml](#loggroups) 
+  * [Services](#services)
+    * [master.yaml(parent)](#service-parent-master)
+    * [master.yaml(child)](#service-master)    
+    * [01-publicalb.yaml](#publicalb)      
+    * [02-securitygroups.yaml](#service-securitygroups)  
+    * [03-apigateway.yaml](#service-apigateway) 
+    * [04-service.yaml](#service)     
+  
+* [Deployment](#deployment)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
-* [License](#license)
-* [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
 
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## Architecture
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Architecture][project-architecture]](https://github.com/CreditSaisonIndia/oneaboveall/blob/CLS-6162/CS-Assignment-Arch-Diagram.png)
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need.
-
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue.
-
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+Oneaboveall contains nested stack templates require to automate the deployment of core & all microservices of Credit Saison India on AWS Cloudfomration Service.
 
 ### Built With
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
+Oneaboveall is built using following tech stack
+* [YAML](https://yaml.org/)
+* [Bash](https://www.gnu.org/software/bash/)
 
 
 
-<!-- GETTING STARTED -->
-## Getting Started
+<!-- TEMPLATE OVERVIEW -->
+## Template Overview
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To make the setup re-useable and easy to manage, CloudFormation and nested stacks have been created.  
+The Templates are a logical grouping of services.
 
-### Prerequisites
+### Core
+
+Core is a parent stack for all independent aws core services templates.
+
+#### master.yaml
+
+Placeholder for all parameters, definition and link to children templates.
+
+#### 01-kms.yaml
+
+Template for AWS Key Management Service (KMS) which makes it easy for us to create and manage cryptographic keys and control their use across a wide range of AWS services and in the applications.  
+
+AWS KMS is a secure and resilient service that uses hardware security modules that have been validated under FIPS 140-2, or are in the process of being validated, to protect all the keys.
+
+#### 01-newvpc.yaml
+
+Creates a new VPC with 6 subnets spread across 2 Avaliablity Zones (The bash script will only take the 'a' and 'b' zones no matter which region you choose.
+
+To allow for flow of traffic across subnets, it also creates the route tables (Seperate for each layer of the stack [Public/Web/Data] )
+
+NATGW is are spun up with route setup to allow for instances in the private subnet 0.0.0.0/0 out access
+
+IGWs are also associated with the VPC
+
+Flowlogs are enabled and IAM Roles associated to the VPC service to allow the logs to be sent to CloudWatch
+
+#### 02-securitygroups.yaml
+
+Creates the groups for each layer of the stack and nests the groups top to bottom
+
+Public has 80 open to 0.0.0.0/0, Web is only open to Public over 80, and Data is only open to Web over 3306
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+
+#### 03-rds.yaml
+
+Creates an RDS Aroura Cluster with 2 nodes, 1 writer and 1 reader
+
+#### 04-apigateway.yaml
+
+Creates two api gateways for internal proxy & partner proxy which acts as a reverse proxy to all our microservices.
+
+#### 04-elasticsearch.yaml
+
+Creates an elasticsearch cluster & its domain 
+
+#### 04-route53.yaml
+
+Create a KSF Hosted Zone. It is effectively connecting user requests to infrastructure running in AWS. 
+
+#### 04-s3.yaml
+
+Generic template use to create a s3 bucket with encryption enabled.
+
+#### 04-s3-logs.yaml
+
+Generic template use to create a s3 bucket for logs purposes with encryption enabled.
+
+#### 04-sqs.yaml
+
+Generic template use to create an amazon queue along with its dead letter queue configured.
+
+#### 04-sqs-fifo.yaml
+
+Generic template use to create an amazon fifo queue along with its dead letter queue configured.
+
+#### 05-cloudtrail.yaml
+
+Enables cloudtrail service to log, continuously monitor, and retain account activity related to actions across AWS infrastructure of KSF.
+
+#### 05-dashboard.yaml
+
+Creates a dashboard with a few metrices about the LoadBalancer and RDS within CloudWatch.
+
+(*) Scope limits mentioned at the end
+
+#### 05-guardduty.yaml
+
+Creates a guardduty detector to continuously monitors for malicious activity and unauthorized behavior to protect our AWS accounts, workloads, and data stored in Amazon S3.
+
+#### 05-loggroups.yaml
+
+Generic template to create a log group inside cloudwatch service.
+
+### Service
+
+Service is a parent stack for all of our microservices aws infrastrcuture templates.
+
+#### master.yaml (parent)
+
+This is the parent stack containing nested stack of each of our microservice master child template so as to provide isolation.
+
+#### master.yaml (child)
+
+This is the parent stack containing nested stack of each of the components used in building microservice infrastructure.
+
+#### 01-publicalb.yaml
+
+Creates a Application loadbalancer and its listener groups.
+
+#### 02-securitygroups.yaml
+
+Creates the groups for each layer of the stack and nests the groups top to bottom for a microservice.
+
+Public has 80 open to 0.0.0.0/0, Web is only open to Public over 80, and Data is only open to Web over 3306
+
+#### 03-apigateway.yaml
+
+Creates REST API & method for internal proxy gateway to route directs to a particular microservice.
+
+#### 04-service.yaml
+
+Creates ec2, autoscaling group & configuration setup require to stand one microservice.
+
+## Deployment
+
+STEP 1. Run ghostrider to assign AWS Profile.
+
+STEP 2. Run core script to deploy core infrastructure as follows
+
 ```sh
-npm install npm@latest -g
+sh deployer-core.sh
 ```
 
-### Installation
+STEP 3. Run service script to deploy all of our microservices infrastructure as follows
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
 ```sh
-git clone https://github.com/your_username_/Project-Name.git
-```
-3. Install NPM packages
-```sh
-npm install
-```
-4. Enter your API in `config.js`
-```JS
-const API_KEY = 'ENTER YOUR API';
+sh deployer-service.sh
 ```
 
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
+```
+INPUTS for the scripts will be as follows:
+1. AWS Profile => Choose Default (as per ghostrider setup)
+2. Cloudformation StackName => core / service (as per your script)
+3. AWS Region => us-east-1 / ap-south-1 / eu-west-1 (as per your account & region)
+4. AWS BucketName => cfn-templates-v2-{envtype} (envtype supported : {'dev' 'qa' 'qa2' 'uat' 'int' 'production'})
+5. Credit Saison Environment => {envtype} (envtype supported : {'dev' 'qa' 'qa2' 'uat' 'int' 'production'})
+```
 
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/CreditSaisonIndia/oneaboveall/issues) for a list of proposed features (and known issues).
 
 
 
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make oneaboveall such an amazing repo to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -151,54 +235,3 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
-
-
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
