@@ -28,8 +28,8 @@
   * [Built With](#built-with)
 * [Template Overview](#template-overview)
   * [Core](#core)
-    * [master.yaml](#master.yaml)
-    * [01-kms.yaml](####01-kms.yaml)      
+    * [core-master](#core-master)
+    * [01-kms](#01-kms)      
     * [01-newvpc.yaml](#newvpc)  
     * [02-securitygroups.yaml](#core-securitygroups) 
     * [03-rds.yaml](#rds)     
@@ -82,29 +82,23 @@ The Templates are a logical grouping of services.
 
 ### Core
 
-Core is a parent stack for all independent aws core services templates.
+> Core is a parent stack for all independent aws core services templates.
 
-#### master.yaml
+- **core-master**
+    - Placeholder for all parameters, definition and link to children templates.
+    
+- **01-kms**
+    - Template for AWS Key Management Service (KMS) which makes it easy for us to create and manage cryptographic keys and control their use across a wide range of AWS services and in the applications. 
+    - AWS KMS is a secure and resilient service that uses hardware security modules that have been validated under FIPS 140-2, or are in the process of being validated, to protect all the keys.
+    
+- **01-newvpc.yaml**
+    - Creates a new VPC with 6 subnets spread across 2 Avaliablity Zones (The bash script will only take the 'a' and 'b' zones no matter which region you choose.
+    - To allow for flow of traffic across subnets, it also creates the route tables (Seperate for each layer of the stack [Public/Web/Data] )
+    - NATGW is are spun up with route setup to allow for instances in the private subnet 0.0.0.0/0 out access
+    - IGWs are also associated with the VPC
+    - Flowlogs are enabled and IAM Roles associated to the VPC service to allow the logs to be sent to CloudWatch
+    
 
-Placeholder for all parameters, definition and link to children templates.
-
-#### 01-kms.yaml
-
-Template for AWS Key Management Service (KMS) which makes it easy for us to create and manage cryptographic keys and control their use across a wide range of AWS services and in the applications.  
-
-AWS KMS is a secure and resilient service that uses hardware security modules that have been validated under FIPS 140-2, or are in the process of being validated, to protect all the keys.
-
-#### 01-newvpc.yaml
-
-Creates a new VPC with 6 subnets spread across 2 Avaliablity Zones (The bash script will only take the 'a' and 'b' zones no matter which region you choose.
-
-To allow for flow of traffic across subnets, it also creates the route tables (Seperate for each layer of the stack [Public/Web/Data] )
-
-NATGW is are spun up with route setup to allow for instances in the private subnet 0.0.0.0/0 out access
-
-IGWs are also associated with the VPC
-
-Flowlogs are enabled and IAM Roles associated to the VPC service to allow the logs to be sent to CloudWatch
 
 #### 02-securitygroups.yaml
 
