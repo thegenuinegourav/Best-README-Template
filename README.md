@@ -28,8 +28,8 @@
   * [Built With](#built-with)
 * [Template Overview](#template-overview)
   * [Core](#core)
-    * [master.yaml](#core-master)
-    * [01-kms.yaml](#kms)      
+    * [master.yaml](#master.yaml)
+    * [01-kms.yaml](####01-kms.yaml)      
     * [01-newvpc.yaml](#newvpc)  
     * [02-securitygroups.yaml](#core-securitygroups) 
     * [03-rds.yaml](#rds)     
@@ -40,10 +40,10 @@
     * [04-s3-logs.yaml](#s3-logs) 
     * [04-sqs.yaml](#sqs)   
     * [04-sqsfifo.yaml](#sqsfifo)       
-    * [05-cloudtrail.yaml](#cloudtrail) 
-    * [05-dashboard.yaml](#dashboard) 
-    * [05-guardduty.yaml](#guardduty)     
-    * [05-loggroups.yaml](#loggroups) 
+    * [05-cloudtrail.yaml]
+    * [05-dashboard.yaml]
+    * [05-guardduty.yaml]
+    * [05-loggroups.yaml]
   * [Services](#services)
     * [master.yaml(parent)](#service-parent-master)
     * [master.yaml(child)](#service-master)    
@@ -53,6 +53,8 @@
     * [04-service.yaml](#service)     
   
 * [Deployment](#deployment)
+  * [Steps](#steps)
+  * [Script Inputs](#script-inputs)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 
@@ -162,7 +164,7 @@ Creates a guardduty detector to continuously monitors for malicious activity and
 
 Generic template to create a log group inside cloudwatch service.
 
-### Service
+### Services
 
 Service is a parent stack for all of our microservices aws infrastrcuture templates.
 
@@ -194,28 +196,31 @@ Creates ec2, autoscaling group & configuration setup require to stand one micros
 
 ## Deployment
 
-STEP 1. Run ghostrider to assign AWS Profile.
+### Steps
 
-STEP 2. Run core script to deploy core infrastructure as follows
+1. Run ghostrider to assign AWS Profile.
+
+2. Run core script to deploy core infrastructure as follows
 
 ```sh
 sh deployer-core.sh
 ```
 
-STEP 3. Run service script to deploy all of our microservices infrastructure as follows
+3. Run service script to deploy all of our microservices infrastructure as follows
 
 ```sh
 sh deployer-service.sh
 ```
 
-```
+### Script Inputs
+
 INPUTS for the scripts will be as follows:
 1. AWS Profile => Choose Default (as per ghostrider setup)
 2. Cloudformation StackName => core / service (as per your script)
 3. AWS Region => us-east-1 / ap-south-1 / eu-west-1 (as per your account & region)
 4. AWS BucketName => cfn-templates-v2-{envtype} (envtype supported : {'dev' 'qa' 'qa2' 'uat' 'int' 'production'})
 5. Credit Saison Environment => {envtype} (envtype supported : {'dev' 'qa' 'qa2' 'uat' 'int' 'production'})
-```
+
 
 <!-- ROADMAP -->
 ## Roadmap
