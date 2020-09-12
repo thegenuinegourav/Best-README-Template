@@ -48,7 +48,7 @@
     * [service-master](#service-master)
     * [service-nested-master](#service-nested-master)    
     * [01-publicalb](#01-publicalb)      
-    * [02-service-securitygroups](#02-service-securitygroups)  
+    * [02-service-securitygroups](#02-securitygroups)  
     * [03-apigateway](#03-apigateway) 
     * [04-service](#04-service)     
   
@@ -148,7 +148,7 @@ The Templates are a logical grouping of services.
 - #### service-master
     - This is the parent stack containing nested stack of each of our microservice master child template so as to provide isolation.
     
-- #### service-child-master
+- #### service-nested-master
     - This is the parent stack containing nested stack of each of the components used in building microservice infrastructure.
     
 - #### 01-publicalb
