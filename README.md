@@ -30,27 +30,27 @@
   * [Core](#core)
     * [core-master](#core-master)
     * [01-kms](#01-kms)      
-    * [01-newvpc.yaml](#newvpc)  
-    * [02-securitygroups.yaml](#core-securitygroups) 
-    * [03-rds.yaml](#rds)     
-    * [04-apigateway.yaml](#core-apigateway) 
-    * [04-route53.yaml](#route53) 
-    * [04-elasticsearch.yaml](#elasticsearch)  
-    * [04-s3.yaml](#s3) 
-    * [04-s3-logs.yaml](#s3-logs) 
-    * [04-sqs.yaml](#sqs)   
-    * [04-sqsfifo.yaml](#sqsfifo)       
-    * [05-cloudtrail.yaml]
-    * [05-dashboard.yaml]
-    * [05-guardduty.yaml]
-    * [05-loggroups.yaml]
+    * [01-newvpc](#01-newvpc)  
+    * [02-securitygroups](#02-securitygroups) 
+    * [03-rds](#03-rds)     
+    * [04-apigateway](#04-apigateway) 
+    * [04-route53](#04-route53) 
+    * [04-elasticsearch](#04-elasticsearch)  
+    * [04-s3](#04-s3) 
+    * [04-s3-logs](#04-s3-logs) 
+    * [04-sqs](#04-sqs)   
+    * [04-sqsfifo](#04-sqsfifo)       
+    * [05-cloudtrail](05-cloudtrail)
+    * [05-dashboard](05-dashboard)
+    * [05-guardduty](05-guardduty)
+    * [05-loggroups](05-loggroups)
   * [Services](#services)
-    * [master.yaml(parent)](#service-parent-master)
-    * [master.yaml(child)](#service-master)    
-    * [01-publicalb.yaml](#publicalb)      
-    * [02-securitygroups.yaml](#service-securitygroups)  
-    * [03-apigateway.yaml](#service-apigateway) 
-    * [04-service.yaml](#service)     
+    * [service-master](#service-master)
+    * [service-nested-master](#service-nested-master)    
+    * [01-publicalb](#01-publicalb)      
+    * [02-service-securitygroups](#02-service-securitygroups)  
+    * [03-apigateway](#03-apigateway) 
+    * [04-service](#04-service)     
   
 * [Deployment](#deployment)
   * [Steps](#steps)
@@ -84,109 +84,87 @@ The Templates are a logical grouping of services.
 
 > Core is a parent stack for all independent aws core services templates.
 
-- **core-master**
+- #### core-master
     - Placeholder for all parameters, definition and link to children templates.
     
-- **01-kms**
+- #### 01-kms
     - Template for AWS Key Management Service (KMS) which makes it easy for us to create and manage cryptographic keys and control their use across a wide range of AWS services and in the applications. 
     - AWS KMS is a secure and resilient service that uses hardware security modules that have been validated under FIPS 140-2, or are in the process of being validated, to protect all the keys.
     
-- **01-newvpc.yaml**
+- #### 01-newvpc
     - Creates a new VPC with 6 subnets spread across 2 Avaliablity Zones (The bash script will only take the 'a' and 'b' zones no matter which region you choose.
     - To allow for flow of traffic across subnets, it also creates the route tables (Seperate for each layer of the stack [Public/Web/Data] )
     - NATGW is are spun up with route setup to allow for instances in the private subnet 0.0.0.0/0 out access
     - IGWs are also associated with the VPC
     - Flowlogs are enabled and IAM Roles associated to the VPC service to allow the logs to be sent to CloudWatch
+
+- #### 02-securitygroups
+    - Creates the groups for each layer of the stack and nests the groups top to bottom
+    - Public has 80 open to 0.0.0.0/0, Web is only open to Public over 80, and Data is only open to Web over 3306
+    - This is an example of how to list things you need to use the software and how to install them.
+
+- #### 03-rds
+    - Creates an RDS Aroura Cluster with 2 nodes, 1 writer and 1 reader
     
+- #### 04-apigateway
+    - Creates two api gateways for internal proxy & partner proxy which acts as a reverse proxy to all our microservices. 
+    
+- #### 04-elasticsearch
+    - Creates an elasticsearch cluster & its domain 
 
+- #### 04-route53
+    - Create a KSF Hosted Zone. It is effectively connecting user requests to infrastructure running in AWS. 
 
-#### 02-securitygroups.yaml
+- #### 04-s3
+    - Generic template use to create a s3 bucket with encryption enabled.
+    
+- #### 04-s3-logs
+    - Generic template use to create a s3 bucket for logs purposes with encryption enabled.
+    
+- #### 04-sqs
+    - Generic template use to create an amazon queue along with its dead letter queue configured.    
+    
+- #### 04-sqs-fifo
+    - Generic template use to create an amazon fifo queue along with its dead letter queue configured.
+    
+- #### 05-cloudtrail
+    - Enables cloudtrail service to log, continuously monitor, and retain account activity related to actions across AWS infrastructure of KSF.
+    
+- #### 05-dashboard
+    - Creates a dashboard with a few metrices about the LoadBalancer and RDS within CloudWatch.
+    - (*) Scope limits mentioned at the end
+    
+- #### 05-guardduty
+    - Creates a guardduty detector to continuously monitors for malicious activity and unauthorized behavior to protect our AWS accounts, workloads, and data stored in Amazon S3.
 
-Creates the groups for each layer of the stack and nests the groups top to bottom
-
-Public has 80 open to 0.0.0.0/0, Web is only open to Public over 80, and Data is only open to Web over 3306
-
-This is an example of how to list things you need to use the software and how to install them.
-
-#### 03-rds.yaml
-
-Creates an RDS Aroura Cluster with 2 nodes, 1 writer and 1 reader
-
-#### 04-apigateway.yaml
-
-Creates two api gateways for internal proxy & partner proxy which acts as a reverse proxy to all our microservices.
-
-#### 04-elasticsearch.yaml
-
-Creates an elasticsearch cluster & its domain 
-
-#### 04-route53.yaml
-
-Create a KSF Hosted Zone. It is effectively connecting user requests to infrastructure running in AWS. 
-
-#### 04-s3.yaml
-
-Generic template use to create a s3 bucket with encryption enabled.
-
-#### 04-s3-logs.yaml
-
-Generic template use to create a s3 bucket for logs purposes with encryption enabled.
-
-#### 04-sqs.yaml
-
-Generic template use to create an amazon queue along with its dead letter queue configured.
-
-#### 04-sqs-fifo.yaml
-
-Generic template use to create an amazon fifo queue along with its dead letter queue configured.
-
-#### 05-cloudtrail.yaml
-
-Enables cloudtrail service to log, continuously monitor, and retain account activity related to actions across AWS infrastructure of KSF.
-
-#### 05-dashboard.yaml
-
-Creates a dashboard with a few metrices about the LoadBalancer and RDS within CloudWatch.
-
-(*) Scope limits mentioned at the end
-
-#### 05-guardduty.yaml
-
-Creates a guardduty detector to continuously monitors for malicious activity and unauthorized behavior to protect our AWS accounts, workloads, and data stored in Amazon S3.
-
-#### 05-loggroups.yaml
-
-Generic template to create a log group inside cloudwatch service.
+- #### 05-loggroups
+    - Generic template to create a log group inside cloudwatch service.
+    
 
 ### Services
 
-Service is a parent stack for all of our microservices aws infrastrcuture templates.
+> Service is a parent stack for all of our microservices aws infrastrcuture templates.
 
-#### master.yaml (parent)
+- #### service-master
+    - This is the parent stack containing nested stack of each of our microservice master child template so as to provide isolation.
+    
+- #### service-child-master
+    - This is the parent stack containing nested stack of each of the components used in building microservice infrastructure.
+    
+- #### 01-publicalb
+    - Creates a Application loadbalancer and its listener groups.
+    
+- #### 02-securitygroups
+    - Creates the groups for each layer of the stack and nests the groups top to bottom for a microservice.
+    - Public has 80 open to 0.0.0.0/0, Web is only open to Public over 80, and Data is only open to Web over 3306
+    
+- #### 03-apigateway
+    - Creates REST API & method for internal proxy gateway to route directs to a particular microservice.
+    
+- #### 04-service
+    - Creates ec2, autoscaling group & configuration setup require to stand one microservice. 
 
-This is the parent stack containing nested stack of each of our microservice master child template so as to provide isolation.
 
-#### master.yaml (child)
-
-This is the parent stack containing nested stack of each of the components used in building microservice infrastructure.
-
-#### 01-publicalb.yaml
-
-Creates a Application loadbalancer and its listener groups.
-
-#### 02-securitygroups.yaml
-
-Creates the groups for each layer of the stack and nests the groups top to bottom for a microservice.
-
-Public has 80 open to 0.0.0.0/0, Web is only open to Public over 80, and Data is only open to Web over 3306
-
-#### 03-apigateway.yaml
-
-Creates REST API & method for internal proxy gateway to route directs to a particular microservice.
-
-#### 04-service.yaml
-
-Creates ec2, autoscaling group & configuration setup require to stand one microservice.
 
 ## Deployment
 
@@ -209,11 +187,11 @@ sh deployer-service.sh
 ### Script Inputs
 
 INPUTS for the scripts will be as follows:
-1. AWS Profile => Choose Default (as per ghostrider setup)
-2. Cloudformation StackName => core / service (as per your script)
-3. AWS Region => us-east-1 / ap-south-1 / eu-west-1 (as per your account & region)
-4. AWS BucketName => cfn-templates-v2-{envtype} (envtype supported : {'dev' 'qa' 'qa2' 'uat' 'int' 'production'})
-5. Credit Saison Environment => {envtype} (envtype supported : {'dev' 'qa' 'qa2' 'uat' 'int' 'production'})
+- **AWS Profile**                `Choose Default (as per ghostrider setup)`
+- **Cloudformation StackName**   `core / service (as per your script)`
+- **AWS Region**                 `us-east-1 / ap-south-1 / eu-west-1 (as per your account & region)`
+- **AWS BucketName**             `cfn-templates-v2-{envtype} (envtype supported : {'dev' 'qa' 'qa2' 'uat' 'int' 'production'})`
+- **Credit Saison Environment**  `{envtype} (envtype supported : {'dev' 'qa' 'qa2' 'uat' 'int' 'production'})`
 
 
 <!-- ROADMAP -->
