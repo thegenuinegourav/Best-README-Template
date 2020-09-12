@@ -65,7 +65,7 @@
 
 <img src="https://github.com/CreditSaisonIndia/oneaboveall/blob/CLS-6162/CS-Assignment-Arch-Diagram.png" alt="Logo">
 
-Oneaboveall contains nested stack templates require to automate the deployment of core & all microservices of Credit Saison India on AWS Cloudfomration Service.
+> Oneaboveall contains nested stack templates require to automate the deployment of core & all microservices of Credit Saison India on AWS Cloudfomration Service.
 
 ### Built With
 Oneaboveall is built using following tech stack
